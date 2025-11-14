@@ -1,0 +1,204 @@
+{
+  "key": "case-instances.custom-cpr-data",
+  "extends": "case-instances",
+  "version": 4,
+  "properties": {
+    "pcrCaseSequenceValue": {
+      "type": "keyword",
+      "copy_to": ["pcrCaseSequenceValue_text", "pcrFullTextVariables" ]
+    },
+    "pcrCaseSequenceValue_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrOwnerName": {
+      "type": "keyword",
+      "copy_to": ["pcrOwnerName_text", "pcrFullTextVariables" ]
+    },
+    "pcrOwnerName_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrCaseState": {
+      "type": "keyword",
+      "copy_to": ["pcrCaseState_text" ]
+    },
+    "pcrCaseState_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrAction": {
+      "type": "keyword",
+      "copy_to": ["pcrAction_text" ]
+    },
+    "pcrAction_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrQuantity": {
+      "type": "long"
+    },
+    "pcrFiName": {
+      "type": "keyword",
+      "copy_to": ["pcrFiName_text", "pcrFullTextVariables" ]
+    },
+    "pcrFiName_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrFinancialInstrumentType": {
+      "type": "keyword",
+      "copy_to": ["pcrFinancialInstrumentType_text", "pcrFullTextVariables" ]
+    },
+    "pcrFinancialInstrumentType_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrAllConsentDone": {
+      "type": "keyword",
+      "copy_to": ["pcrAllConsentDone_text" ]
+    },
+    "pcrAllConsentDone_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrAdditionalRules" : {
+      "type": "keyword",
+      "copy_to": ["pcrAdditionalRules_text" ]
+    },
+    "pcrAdditionalRules_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrHoldingPeriods": {
+      "type": "keyword",
+      "copy_to": ["pcrHoldingPeriods_text" ]
+    },
+    "pcrHoldingPeriods_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrFpa": {
+      "type": "keyword",
+      "copy_to": ["pcrFpa_text" ]
+    },
+    "pcrFpa_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrAdhocConfarea": {
+      "type": "keyword",
+      "copy_to": ["pcrAdhocConfarea_text" ]
+    },
+    "pcrAdhocConfarea_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrMnpiLimitOrders": {
+      "type": "keyword",
+      "copy_to": ["pcrMnpiLimitOrders_text" ]
+    },
+    "pcrMnpiLimitOrders_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrMnpiExposure": {
+      "type": "keyword",
+      "copy_to": ["pcrMnpiExposure_text" ]
+    },
+    "pcrMnpiExposure_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrValor": {
+      "type": "keyword",
+      "copy_to": ["pcrFullTextVariables", "pcrValor_text"]
+    },
+    "pcrValor_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrIsin": {
+      "type": "keyword",
+      "copy_to": ["pcrFullTextVariables", "pcrIsin_text" ]
+    },
+    "pcrIsin_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrRequestForLimitOrder": {
+      "type": "keyword",
+      "copy_to": ["pcrRequestForLimitOrder_text" ]
+    },
+    "pcrRequestForLimitOrder_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrDecisonLineManager": {
+      "type": "keyword",
+      "copy_to": ["pcrDecisionLineManager_text" ]
+    },
+    "pcrDecisionLineManager_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrDecisionLocalCompliance": {
+      "type": "keyword",
+      "copy_to": ["pcrDecisionLocalCompliance_text" ]
+    },
+    "pcrDecisionLocalCompliance_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrManuallySelected": {
+      "type": "keyword",
+      "copy_to": ["pcrManuallySelected_text" ]
+    },
+    "pcrManuallySelected_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrCreatorUserRole": {
+      "type": "keyword",
+      "copy_to": ["pcrCreatorUserRole_text" ]
+    },
+    "pcrCreatorUserRole_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "openingDate": {
+      "type": "date",
+      "copy_to": ["openingDate_text" ]
+    },
+    "openingDate_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrFullTextVariables": {
+      "type": "text",
+      "analyzer": "ngrams",
+      "search_analyzer": "standard"
+    }
+  }
+}

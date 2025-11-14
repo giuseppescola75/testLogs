@@ -1,0 +1,7 @@
+{
+  "key": "pat-compliance-dashboard-case-query",
+  "sourceIndex": "case-instances",
+  "type": "query",
+  "version": 2,
+  "templateResource": "classpath:/com/flowable/indexing/mapping-extension/custom/pat-compliance-dashboard-case-query.ftl"
+}

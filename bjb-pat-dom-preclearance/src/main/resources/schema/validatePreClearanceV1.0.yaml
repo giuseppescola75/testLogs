@@ -1,0 +1,292 @@
+
+#/engine/v1/executions/ovs.pat-integration/main.x/validatePreClearance
+openapi: 3.0.3
+info:
+  title: Personal Account Transaction Pre Clearance Validation
+  version: "0.9"
+  contact:
+    name: u1d304
+  description: |
+    This service responds with a decision on whether a pre clearance can be granted or not.
+
+    # Changelog:
+    ## Changes in version 0.1
+      * Initial version
+    ## Changes in version 0.2
+      * Updates after discussion with consumer. Removal of preClearanceDate. Updates of examples.
+    ## Changes in version 0.3
+      * Marked mandatory fields
+      * Added default values
+      * Added Bloomberg ID as FI identifier
+      * Added limitOrder as indicator for limit order
+      * Added financialInstrumentName for manually entered instruments
+      * Added underlying
+      * Added underlyingName
+      * Updated rule outcome
+    ## Changes in version 0.4
+      * Update JBID to JBGID as per bank standard naming
+      * Added validity date for the pre clearance validation
+    ## Changes in version 0.5
+      * Moved warning type from overallResult to ruleOutcome
+    ## Changes in version 0.6
+      * Changed from instrument identifier to specific pre-clearance financial instrument
+      * Updated underlyings to a list
+      * Added weight for underlyings
+      * Introduced FinancialInstrumentIdentifier as separate schema
+    ## Changes in version 0.7
+      * Removed financialInstrumentName
+      * Added zr
+      * Added title message
+    ## Changes in version 0.8
+      * Removed not existing field jbisin
+      * Updated outcomes to array type
+      * Renamed bbid to bbgid
+      * zr becomes optional parameter
+    ## Changes in version 0.9
+      * validationResult as the response body field
+
+servers:
+  - url: http://localhost:9090//engine/v1/executions/ovs.pat-integration/main.x/validatePreClearance
+    description: Integration of dev environment (local)
+  - url: https://ovs-ch-es-execminch-tst.juliusbaer.com//engine/v1/executions/ovs.pat-integration/main.x/validatePreClearance
+    description: Integration of test environment
+  - url: https://ovs-ch-es-execminch-uat.juliusbaer.com//engine/v1/executions/ovs.pat-integration/main.x/validatePreClearance
+    description: Integration of user acceptance test environment
+  - url: https://ovs-ch-es-execminch.juliusbaer.com//engine/v1/executions/ovs.pat-integration/main.x/validatePreClearance
+    description: Integration of production environment
+
+paths:
+  /validatePreClearance:
+    post:
+      summary: This service returns a decision on whether a pre clearance can be granted or not.
+      operationId: validatePreClearance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/validatePreClearanceRequest"
+      responses:
+        200:
+          description: Pre clearance validation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validatePreClearanceResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    validatePreClearanceRequest:
+      description: Request to validate a pre clearance request
+      required:
+        - requestedBy
+        - requestedFor
+        - financialInstrument
+        - transactionType
+      properties:
+        validationRequestId:
+          type: string
+          description: Id for the caller to identify the according response
+          example: abcde12345
+        language:
+          type: string
+          default: en-US
+          description: Locale language tag based on <language (ISO639)>-<country (ISO 3166)>. Default language en-US.
+          example: de-CH
+        requestedBy:
+          type: string
+          description: U-number of the employee submitting the request
+          example: u12345
+        requestedFor:
+          type: string
+          description: U-number of the employee affected by the request
+          example: u12345
+        zr:
+          type: string
+          description: Identifier of the banking relationship for which the order will be placed.
+          example: ZR12345678
+        thirdPartyPortfolio:
+          type: boolean
+          default: false
+          description: True if the portfolio which is the source of the order is held with a 3rd party bank (not a JB entity), otherwise false
+          example: true, false
+        financialInstrument:
+          $ref: "#/components/schemas/FinancialInstrument"
+        underlyings:
+          multipleOf: 10
+          $ref: "#/components/schemas/Underlying"
+        transactionType:
+          type: string
+          enum: [buy, sell]
+          description: Transaction type defining the type of activity
+          example: buy
+        limitOrder:
+          type: boolean
+          default: false
+          description: True if the order to be placed is a limit order, otherwise false
+          example: true, false
+        volumeSize:
+          type: integer
+          description: Amount of the order
+          example: 100, 212
+        limitPrice:
+          type: number
+          description: Limit price of the instrument
+          example: 100.00, 10.52
+        validityDateFrom:
+          type: string
+          description: Date of when the order active (yyyy.MM.dd)
+          example: 2025.01.17
+        validityDateTo:
+          type: string
+          description: Date of when the order expires (yyyy.MM.dd)
+          example: 2025.01.17
+
+    FinancialInstrument:
+      description: Represents the financial instrument
+      properties:
+        identifier:
+          $ref: "#/components/schemas/FinancialInstrumentIdentifier"
+
+    Underlying:
+      description: Represents a financial instrument as an underlying
+      properties:
+        identifier:
+          $ref: "#/components/schemas/FinancialInstrumentIdentifier"
+        weight:
+          type: integer
+          description: Weight in % as an underlying to the main financial instrument
+          example: 50
+
+    FinancialInstrumentIdentifier:
+      description: Identifiers for a financial instrument
+      properties:
+        jbgid:
+          type: string
+          description: JB internal unique identifier for the financial instrument
+          example: B123456
+        isin:
+          type: string
+          description: International Securities Identification Number
+          example: CH1234567890
+        valor:
+          type: string
+          description: Valorennummer (unique identifier for financial instruments in Switzerland)
+          example: 12345678
+        jbvalor:
+          type: string
+          description: JB internal version of Valorennummer (unique identifier for financial instruments in Switzerland)
+          example: 12345678
+        bbgid:
+          type: string
+          description: Bloomberg ID
+          example: 12345678
+
+    validatePreClearanceResponse:
+      description: Response including pre-clearance validation result
+      properties:
+        validationRequestId:
+          type: string
+          description: Id for the caller to identify the according response
+          example: abcde12345
+        validationId:
+          type: string
+          description: Unique ID identifying the validation performed by the rule engine
+          example: a81bc81b-dead-4e5d-abff-90865d1e13b1
+        validationResult:
+          $ref: "#/components/schemas/validationResult"
+
+    validationResult:
+      type: object
+      properties:
+        overallValidationResult:
+          $ref: "#/components/schemas/overallValidationResult"
+        outcomes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ruleOutcome"
+        preClearanceValidity:
+          type: string
+          format: date
+          description: Date of when the pre clearance expires (yyyy.MM.dd), null if the pre clearance is not accepted
+          example: 2025.01.17Z, null
+
+    overallValidationResult:
+      type: object
+      properties:
+        severity:
+          type: string
+          enum: [available, warning, block]
+          description: Severity of the result.
+          example: block
+        message:
+          type: string
+          description: Message describing the validation result.
+          example: This request cannot be approved due to restrictions that apply to the order.
+
+    ruleOutcome:
+      type: object
+      properties:
+        group:
+          type: string
+          description: Business rule group as defined for the rule set.
+          example: Trading Window
+        rule:
+          type: string
+          description: Id of the business rule creating the outcome.
+          example: PAT0001
+        ruleName:
+          type: string
+          description: Name of the business rule creating the outcome.
+          example: Trading Window JB Shares
+        outcome:
+          type: string
+          description: Id of the outcome within the rule.
+          example: 1
+        severity:
+          type: string
+          enum: [warning, block]
+          description: Severity of the rule outcome influencing the result.
+          example: block
+        warningType:
+          type: string
+          enum: [confirmation, comment, select, multiselect]
+          description: Defines the interaction required in case of a warning. Null if the result is not a warning.
+          example: confirmation, null
+        title:
+          type: string
+          description: Title message for the rule outcome
+          example: Trading Window Restriction
+        message:
+          type: string
+          description: Message describing the outcome.
+          example: The order cannot be accepted because the submitted order validity is not within the defined trading window for employees (JBG-2010-00 Personal Account Transactions by Employees)
+
+  responses:
+    BadRequest:
+      description: The request is invalid.
+      content:
+        text/html:
+          schema:
+            properties:
+              ErrorCode:
+                type: string
+                example: "400"
+              Message:
+                type: string
+                example: Mandatory parameters are missing or the provided parameters are not accepted.
+    InternalServerError:
+      description: An error occurred during the service execution. Please contact the administrator.
+      content:
+        text/html:
+          schema:
+            properties:
+              ErrorCode:
+                type: string
+                example: "500"
+              Message:
+                type: string
+                example: A NullPointerException occurred during the rule processing.

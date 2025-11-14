@@ -1,0 +1,94 @@
+{
+  "key": "pcr-dashboard-cases-query",
+  "type": "query",
+  "sourceIndex": "case-instances",
+  "version": 9,
+  "parameters": {
+    "creatorUserRole": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "pcrFiName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "identityLinkType": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "identityLinkUserId": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "identityLinkGroupKey": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "sortParameters": {
+    "pcrFiName": {
+      "type": "text"
+    }
+  },
+  "customFilter": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "pcrCreatorUserRole_text": {
+              "query": "{creatorUserRole}",
+              "zero_terms_query": "all",
+              "operator": "and"
+            }
+          }
+        },
+        {
+          "nested": {
+            "path": "identityLinks",
+            "query": {
+              "bool": {
+                "should": [
+                  {
+                    "match": {
+                      "identityLinks.type": {
+                        "query": "{identityLinkType}",
+                        "zero_terms_query": "all",
+                        "operator": "and"
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "identityLinks.userId": {
+                        "query": "{identityLinkUserId}",
+                        "zero_terms_query": "all",
+                        "operator": "and"
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "identityLinks.groupId": {
+                        "query": "{identityLinkGroupKey}",
+                        "zero_terms_query": "all",
+                        "operator": "and"
+                      }
+                    }
+                  }
+                ],
+                "minimum_should_match": 2
+              }
+            },
+            "score_mode": "none",
+            "ignore_unmapped": true
+          }
+        },
+        {
+          "terms": {
+            "caseDefinitionKey": ["PCR_C001"]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS FINANCIAL_INSTRUMENTS (
+    id                          VARCHAR(36) PRIMARY KEY,
+    ass_jb_global_id            VARCHAR(64),
+    ass_isin                    VARCHAR(32),
+    ass_valor_no                VARCHAR(32),
+    ass_mst_sec_id              VARCHAR(32),
+    ass_bbgid                   VARCHAR(32),
+    ass_issuer_no               VARCHAR(32),
+    ass_bjb_name_long_issuer    VARCHAR(256),
+    ass_bjb_name_long_product   VARCHAR(256),
+    ass_bjb_name_short_product  VARCHAR(256),
+    ass_fic_industry_sector     VARCHAR(128),
+    ass_instrument_group        VARCHAR(128),
+    ass_fic_product_type        VARCHAR(128),
+    ass_fund_esg_coverage       VARCHAR(64),
+    ass_sfdr_category_type      VARCHAR(64),
+    ass_status                  VARCHAR(32),
+    ass_country                 VARCHAR(3),
+    ass_fic_fix_income_sector   VARCHAR(128),
+    ass_mst_fund_id             VARCHAR(32)
+    );

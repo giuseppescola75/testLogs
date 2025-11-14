@@ -1,0 +1,35 @@
+{
+  "key": "pcr-general-search-case-query",
+  "type": "query",
+  "sourceIndex": "case-instances",
+  "version": 1,
+  "parameters": {
+    "searchText": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "customFilter": {
+    "bool": {
+	"must": [
+        {
+          "multi_match": {
+            "query": "{searchText}",
+            "type": "cross_fields",
+            "fields": [
+              "pcrFullTextVariables"
+            ],
+            "operator": "and"
+          }
+        },
+        {
+          "terms": {
+            "caseDefinitionKey": [
+              "PCR_C001"
+            ]
+          }
+        }
+]
+    }
+  }
+}

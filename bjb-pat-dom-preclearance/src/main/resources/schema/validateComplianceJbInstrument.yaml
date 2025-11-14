@@ -1,0 +1,97 @@
+#/engine/v1/executions/brp.commons/main.x/validateComplianceJbInstrument
+openapi: 3.0.3
+info:
+  title: Compliance JB Financial Instrument
+  version: "0.1"
+  contact: 
+    name: u1d304
+  description: |
+    This service responds with a decision whether an instrument represented by a valor is in the list of instruments that are classified as jb issued by compliance.
+
+    # Changelog:
+    ## Changes in version 0.1
+      * Initial version
+
+servers:
+  - url: http://localhost:9090//engine/v1/executions/brp.commons/main.x/brp-service//BRP%20Service/validateComplianceJbInstrument
+    description: Integration of dev environment (local)
+  - url: https://rsp-es-execminch-tst.juliusbaer.com:443/engine/v1/executions/brp.commons/main.0/brp-service//BRP%20Service/validateComplianceJbInstrument
+    description: Integration of test environment
+  - url: https://rsp-es-execminch-uat.juliusbaer.com:443/engine/v1/executions/brp.commons/main.0/brp-service//BRP%20Service/validateComplianceJbInstrument
+    description: Integration of user acceptance test environment
+  - url: https://rsp-es-execminch-prd.juliusbaer.com:443/engine/v1/executions/brp.commons/main.0/brp-service//BRP%20Service/validateComplianceJbInstrument
+    description: Integration of production environment
+
+paths:
+  /getComplianceJbInstrumentList:
+    post:
+      summary: This service returns whether an instrument is in the list of financial instruments classified as JB issued by compliance.
+      operationId: validateComplianceJbInstrument
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/validateComplianceJbInstrumentRequest"
+      responses:
+        200:
+          description: Decision whether an instrument is in the list of financial instruments classified as JB issued by compliance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validateComplianceJbInstrumentResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    validateComplianceJbInstrumentRequest:
+      description: Request for a decision whether an instrument is in the list of financial instruments classified as JB issued by compliance.
+      required:
+        - valor
+      properties:
+        valor:
+          type: string
+          description: Valorennummer (unique identifier for financial instruments in Switzerland) for the main instrument
+          example: 12345678
+        underlyings:
+          type: array
+          items:
+            type: string
+          description: Valorennummer(s) for the underlying instrument(s)
+          example: [ "12345678", "87654320" ]
+
+    validateComplianceJbInstrumentResponse:
+      description: Response including a list of financial instruments
+      properties:
+        isInComplianceList: 
+          type: boolean
+          description: If instrument is in list true, else false
+          example: true, false
+
+  responses:
+    BadRequest:
+      description: The request is invalid.
+      content:
+        text/html:
+          schema:
+            properties:
+              ErrorCode:
+                type: string
+                example: "400"
+              Message:
+                type: string
+                example: Mandatory parameters are missing or the provided parameters are not accepted.
+    InternalServerError:
+      description: An error occurred during the service execution. Please contact the administrator.
+      content:
+        text/html:
+          schema:
+            properties:
+              ErrorCode:
+                type: string
+                example: "500"
+              Message:
+                type: string
+                example: A NullPointerException occurred during the rule processing.

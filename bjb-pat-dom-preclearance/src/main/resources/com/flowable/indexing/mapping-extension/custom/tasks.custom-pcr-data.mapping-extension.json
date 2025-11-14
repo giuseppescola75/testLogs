@@ -1,0 +1,25 @@
+{
+  "key": "task-instances.custom-pcr-data",
+  "extends": "tasks",
+  "version": 6,
+  "properties": {
+    "pcrTeamId": {
+      "type": "keyword"
+    },
+    "pcrTeamId_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    },
+    "pcrCreatorUserRole": {
+      "type": "keyword",
+      "copy_to": ["pcrCreatorUserRole_text"]
+    },
+    "pcrCreatorUserRole_text": {
+      "type": "text",
+      "search_analyzer": "standard",
+      "analyzer": "ngrams"
+    }
+  }
+}
+
